@@ -8,8 +8,6 @@ import os
 from typing import Dict, Any
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.messages import HumanMessage, SystemMessage
-
 
 def generate_checklist(code_snippet: str, api_key: str) -> str:
     """
@@ -49,17 +47,15 @@ def generate_checklist(code_snippet: str, api_key: str) -> str:
         8. Format output as a numbered markdown list
         
         Response Format:
-        # 🛡️ Compliance Checklist Results
-        
-        ## Summary
+        **Summary**
         Brief overview of the code analysis (2-3 sentences)
         
-        ## Recommendations
+        **Recommendations**
         1. **[Category] Issue Title**: Detailed description and fix
         2. **[Category] Issue Title**: Detailed description and fix
         ...
         
-        ## Priority Level
+        **Priority Level**
         Indicate overall priority: 🔴 High | 🟡 Medium | 🟢 Low
         """
         

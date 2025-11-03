@@ -1,6 +1,6 @@
 # 🛡️ Compliance Checklist Agent
 
-A responsive single-page web application built with Streamlit and LangChain that analyzes code snippets and generates comprehensive compliance checklists focusing on accessibility, security, and best practices.
+A responsive single-page web application built with Streamlit and LangChain that analyzes HTML, CSS, and JavaScript code snippets and generates comprehensive compliance checklists focusing on accessibility, security, and best practices.
 
 ## ✨ Features
 
@@ -8,9 +8,11 @@ A responsive single-page web application built with Streamlit and LangChain that
 - **♿ Accessibility Focus**: WCAG compliance checking and recommendations
 - **🔒 Security Auditing**: Identifies potential vulnerabilities and security issues
 - **📱 Fully Responsive**: Works seamlessly on desktop, tablet, and mobile devices
-- **💬 Chat-like Interface**: Interactive history display similar to ChatGPT
-- **🎨 Modern UI**: Clean, professional design with smooth animations
+- **💬 Chat-like Interface**: Interactive conversation history with timestamps
+- **🎨 Clean Modern UI**: Minimalist design with improved typography and spacing
 - **🔐 Secure**: API key loaded from local .env file, never exposed to frontend
+- **🚀 Auto-Clear Input**: Text area clears automatically after successful analysis
+- **📋 Organized Sidebar**: Well-structured help documentation with visual separators
 
 ## 🚀 Quick Start
 
@@ -56,24 +58,24 @@ The application will open in your browser at `http://localhost:8501`
 
 ## 📖 How to Use
 
-### Input Code
+### 🚀 Getting Started
 
-1. Paste your HTML, CSS, or JavaScript code in the text area
-2. The application accepts code snippets or complete files
-3. Minimum 10 characters required for analysis
+1. **Add Your Code**: Paste HTML/CSS/JS code in the text area
+2. **Analyze & Review**: Click "Validate Code" and wait 10-30 seconds
+3. **Improve Your Code**: Follow recommendations and re-analyze as needed
 
-### Get Analysis
+### 📋 Supported Code Types
 
-1. Click "Validate Code" to start analysis
-2. Wait 10-30 seconds for GPT-4 processing
-3. Review the generated compliance checklist
+- **HTML**: Tags, attributes, semantic structure
+- **CSS**: Selectors, properties, responsive design
+- **JavaScript**: Functions, DOM manipulation, event handling
 
-### Review Results
+### 🔍 Analysis Categories
 
-- **Accessibility [♿]**: WCAG compliance issues and fixes
-- **Security [🔒]**: Vulnerability identification and mitigation
-- **Performance [⚡]**: Optimization recommendations
-- **Best Practices [✅]**: Code quality improvements
+- **Accessibility [♿]**: WCAG compliance, ARIA attributes, keyboard navigation
+- **Security [🔒]**: XSS vulnerabilities, input validation, secure practices
+- **Performance [⚡]**: Loading optimization, resource efficiency
+- **Best Practices [✅]**: Code organization, semantic HTML, modern patterns
 
 ## 🏗️ Project Structure
 
@@ -106,9 +108,11 @@ Compliance-Checklist-Agent/
 ### Key Features Implementation
 
 - **Responsive Design**: CSS media queries and Streamlit column layouts
-- **Chat Interface**: Two-column layout mimicking popular AI chat apps
+- **Chat Interface**: History at top, input at bottom with conversation bubbles
 - **Code Highlighting**: Automatic language detection and syntax highlighting
-- **History Management**: Persistent session state with timestamp tracking
+- **History Management**: Readable timestamps (e.g., "3 Nov, 21:45") with conversation numbering
+- **Auto-Clear Input**: Text area clears automatically after successful analysis
+- **Clean UI**: Minimalist design with organized sidebar and visual separators
 - **Error Recovery**: Graceful handling of API failures and network issues
 
 ## 📱 Mobile Responsiveness
@@ -118,8 +122,25 @@ The application is fully optimized for mobile devices:
 - **Adaptive Layout**: Content reflows naturally on narrow screens
 - **Touch-Friendly**: Large buttons and touch targets
 - **Readable Text**: Optimized font sizes and spacing
-- **Accessible Sidebar**: Easy navigation on mobile devices
+- **Accessible Sidebar**: Easy navigation on mobile devices with organized sections
 - **Fast Loading**: Efficient code structure for mobile networks
+
+## 🎨 User Interface Highlights
+
+### Clean Modern Design
+
+- **Minimalist Layout**: Focus on essential functionality without clutter
+- **Improved Typography**: 18px h2 headings for better readability
+- **Visual Hierarchy**: Proper font sizes and colors for clear information structure
+- **Organized Sidebar**: Sections separated with horizontal lines for easy scanning
+
+### Enhanced User Experience
+
+- **History at Top**: Conversation history displayed above input for natural flow
+- **Auto-Clear Input**: Text area automatically clears after successful analysis
+- **Readable Timestamps**: "3 Nov, 21:45" format instead of technical timestamps
+- **Conversation Numbering**: Easy tracking of multiple analyses
+- **Visual Separators**: Clean section divisions throughout the interface
 
 ## 🛠️ Development
 
@@ -176,7 +197,8 @@ The application is fully optimized for mobile devices:
 ### Python Dependencies
 
 - `streamlit>=1.28.0` - Web application framework
-- `langchain>=0.0.340` - AI/LLM framework
+- `langchain>=0.1.0` - AI/LLM framework
+- `langchain-core>=0.1.0` - LangChain core components
 - `langchain-openai>=0.0.2` - OpenAI integration
 - `openai>=1.3.0` - OpenAI API client
 - `python-dotenv>=1.0.0` - Environment variable management
@@ -210,3 +232,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 **Built with ❤️ for better web accessibility and security**
+
+_Last Updated: November 2025_

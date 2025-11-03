@@ -35,7 +35,47 @@ st.markdown("""
     .main-header {
         text-align: center;
         padding: 1rem 0;
+    }
+    
+    .main-header h1 {
+        font-size: 3.2rem !important;
+        color: #4485ff !important;
+        font-weight: 700 !important;
+        margin: 0 0 0.5rem 0 !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    /* Ensure main header is not affected by general stMarkdown styling */
+    div.main-header h1 {
+        font-size: 3.2rem !important;
+        color: #4485ff !important;
+        font-weight: 700 !important;
+    }
+    
+    .main-header p {
+        color: #4b5563 !important;
+        font-size: 1.1rem !important;
+        font-weight: 500 !important;
+    }
+    
+    /* History section styling */
+    .history-section {
+        max-height: 60vh;
+        overflow-y: auto;
+        scroll-behavior: smooth;
         margin-bottom: 2rem;
+    }
+    
+    /* Input section styling */
+    .input-section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 2px solid #e9ecef;
+        position: sticky;
+        bottom: 0;
+        z-index: 100;
     }
     
     /* Sidebar styling for mobile */
@@ -77,8 +117,14 @@ st.markdown("""
     
     /* Responsive text sizing */
     @media (max-width: 768px) {
-        .main-header h1 {
-            font-size: 1.5rem !important;
+        .main-header h1,
+        div.main-header h1,
+        .main-header .stMarkdown h1 {
+            font-size: 2.2rem !important;
+        }
+        
+        .main-header p {
+            font-size: 0.95rem !important;
         }
         
         .stTextArea textarea {
@@ -123,6 +169,57 @@ st.markdown("""
         visibility: hidden !important;
         opacity: 0 !important;
     }
+    
+    /* Agent response styling - consistent small font with bold headings */
+    .stMarkdown {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    /* Style for agent response headers only, not main header */
+    .stMarkdown h1:not(.main-header h1), 
+    .stMarkdown h2, 
+    .stMarkdown h3, 
+    .stMarkdown h4, 
+    .stMarkdown h5, 
+    .stMarkdown h6 {
+        font-size: 0.95rem !important;
+        font-weight: 600 !important;
+        margin: 0.75rem 0 0.5rem 0 !important;
+        color: #949494 !important;
+    }
+    
+    /* Additional specificity for main header */
+    .main-header .stMarkdown h1,
+    div.main-header h1 {
+        font-size: 3.2rem !important;
+        color: #4485ff !important;
+        font-weight: 700 !important;
+        margin: 0 0 0.5rem 0 !important;
+    }
+    
+    /* Specific styling for h2 headings */
+    .stMarkdown h2 {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        margin: 0.75rem 0 0.5rem 0 !important;
+        color: #949494 !important;
+    }
+    
+    .stMarkdown p {
+        font-size: 0.9rem;
+        margin: 0.4rem 0;
+    }
+    
+    .stMarkdown ul, .stMarkdown ol {
+        font-size: 0.9rem;
+        margin: 0.5rem 0;
+    }
+    
+    .stMarkdown li {
+        margin: 0.2rem 0;
+        line-height: 1.4;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -133,6 +230,8 @@ def initialize_session_state():
         st.session_state.history = []
     if 'api_key_loaded' not in st.session_state:
         st.session_state.api_key_loaded = False
+    if 'clear_input' not in st.session_state:
+        st.session_state.clear_input = False
 
 
 def load_api_key():
@@ -159,40 +258,36 @@ def load_api_key():
 def render_sidebar():
     """Render the sidebar with user manual and instructions."""
     with st.sidebar:
-        st.markdown("""
-        # 📖 User Manual & Instructions
-        
+        st.markdown("""        
         ## 🎯 Purpose
         This tool analyzes your HTML, CSS, and JavaScript code for:
         - **Accessibility** compliance (WCAG guidelines)
         - **Security** vulnerabilities
         - **Performance** optimizations
         - **Best practices** recommendations
+
+        ---
+
+        ## 📋 Instructions
+
+        ### Step 1: Add Your Code
+        1. Paste your HTML/CSS/JS code in the text area below
+        2. You can submit a snippet or paste entire file
+        3. Supports HTML, CSS, and JavaScript code only
         
-        ## 🔧 How to Use
+        ### Step 2: Analyze & Review
+        1. Click the "Validate Code" button
+        2. Wait for the AI analysis (typically 10-30 seconds)
+        3. Review your personalized compliance checklist
         
-        ### Step 1: Setup
-        1. Ensure your OpenAI API key is set in the `.env` file
-        2. The key must be valid and have GPT-4 access
-        
-        ### Step 2: Input Code
-        1. Paste your HTML/CSS/JS code in the text area
-        2. The code can be a snippet or complete file
-        3. Minimum 10 characters required
-        
-        ### Step 3: Validate
-        1. Click "Validate Code" button
-        2. Wait for the AI analysis (may take 10-30 seconds)
-        3. Review the generated checklist
-        
-        ## 📱 Mobile Support
-        - Fully responsive design
-        - Sidebar accessible via hamburger menu
-        - Optimized touch interactions
-        - Readable on all screen sizes
+        ### Step 3: Improve Your Code
+        1. Follow the recommendations provided
+        2. Submit updated code for re-analysis
+        3. Track your improvements over time
+
+        ---
         
         ## 🔍 What Gets Analyzed
-        
         ### Accessibility [♿]
         - ARIA attributes and roles
         - Keyboard navigation support
@@ -218,6 +313,8 @@ def render_sidebar():
         - Semantic HTML
         - CSS methodology
         - JavaScript patterns
+
+        ---
         
         ## 🎨 Example Code Types
         
@@ -247,11 +344,12 @@ def render_sidebar():
             .innerHTML = 'Hello World';
         }
         ```
+
+        ---
         
         ## 🚨 Troubleshooting
         
         ### Common Issues:
-        - **"API Key Not Found"**: Update your `.env` file
         - **"Not code snippet"**: Ensure you're pasting actual code
         - **"API Error"**: Check internet connection and API quota
         - **Slow response**: GPT-4 analysis takes time, please wait
@@ -260,11 +358,13 @@ def render_sidebar():
         - Check that your code contains recognizable patterns
         - Ensure proper formatting and syntax
         - Try shorter code snippets if timeout occurs
+
+        ---
         
         ## 🔄 Version Info
         - **Framework**: Streamlit + LangChain
         - **AI Model**: GPT-4 (OpenAI)
-        - **Updated**: November 2025
+        - **Developed**: November 2025
         """)
 
 
@@ -273,20 +373,37 @@ def render_history():
     if not st.session_state.history:
         return
     
-    st.markdown("## 📋 Validation History")
+    st.markdown(f"## � Conversation History ({len(st.session_state.history)} analysis{'es' if len(st.session_state.history) != 1 else ''})")
     
     # Display history in reverse order (newest first)
     for i, entry in enumerate(reversed(st.session_state.history)):
+        # Add a subtle conversation separator
+        # Parse the timestamp and format as "3 Nov, 21:46"
+        try:
+            timestamp_obj = datetime.strptime(entry['timestamp'], "%Y-%m-%d %H:%M:%S")
+            formatted_time = timestamp_obj.strftime("%d %b, %H:%M").lstrip('0')  # Remove leading zero from day
+        except:
+            # Fallback to original format if parsing fails
+            formatted_time = entry['timestamp'].split(' ')[1][:5]  # Just HH:MM
+        
+        st.markdown(f"""
+        <div style="border-bottom: 1px solid #e9ecef; padding-bottom: 0.5rem; margin: 0.5rem 0;">
+            <small style="color: #888; font-weight: 400; font-size: 0.75rem;">
+                Conversation #{len(st.session_state.history) - i} • {formatted_time}
+            </small>
+        </div>
+        """, unsafe_allow_html=True)
+        
         with st.container():
             # Create two columns for chat-like appearance
             col1, col2 = st.columns([1, 1])
             
             with col2:  # User code (right side)
-                st.markdown(f"""
+                st.markdown("""
                 <div style="text-align: right; margin-bottom: 0.5rem;">
-                    <small style="color: #666;">
-                        🧑‍💻 <strong>Your Code</strong> • {entry['timestamp']}
-                    </small>
+                    <span style="background: #e3f2fd; padding: 0.25rem 0.5rem; border-radius: 10px; color: #1976d2; font-size: 0.8rem;">
+                        🧑‍💻 <strong>You</strong>
+                    </span>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -305,11 +422,11 @@ def render_history():
                        language=language)
             
             with col1:  # Agent response (left side)
-                st.markdown(f"""
+                st.markdown("""
                 <div style="margin-bottom: 0.5rem;">
-                    <small style="color: #666;">
+                    <span style="background: #e8f5e8; padding: 0.25rem 0.5rem; border-radius: 10px; color: #2e7d32; font-size: 0.8rem;">
                         🛡️ <strong>Compliance Agent</strong>
-                    </small>
+                    </span>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -343,23 +460,26 @@ def main():
     if not api_key:
         st.stop()
     
-    # Main input section
-    st.markdown("""
-    <h3 style="margin-bottom: 1rem;">💻 Enter Your Code</h3>
-    """, unsafe_allow_html=True)
+    # History section (at the top)
+    st.markdown('<div class="history-section">', unsafe_allow_html=True)
+    render_history()
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    # Code input area
+    # Clear input if flag is set
+    if st.session_state.clear_input:
+        st.session_state.code_input = ""
+        st.session_state.clear_input = False
+    
+    # Code input area with on_change callback
     code_input = st.text_area(
         label="Paste your HTML, CSS, or JavaScript code here:",
         placeholder="""Example:
 <div class="card">
     <h1>Welcome to my website</h1>
     <button onclick="submitForm()">Submit</button>
-    <img src="logo.png" />
 </div>
 
 <style>
-.card { background: #fff; padding: 20px; }
 button { color: blue; }
 </style>
 
@@ -396,7 +516,7 @@ function submitForm() {
             st.stop()
         
         # Show processing spinner
-        with st.spinner("Analyzing your code for compliance issues... This may take 10-30 seconds."):
+        with st.spinner("🤖 Analyzing your code for compliance issues... This may take 10-30 seconds."):
             try:
                 # Generate checklist
                 result = generate_checklist(code_input, api_key)
@@ -409,10 +529,13 @@ function submitForm() {
                     'timestamp': timestamp
                 })
                 
-                # Show success message
-                st.success("✅ Analysis complete! Check the results below.")
+                # Clear input for next request
+                st.session_state.clear_input = True
                 
-                # Force rerun to show the new history
+                # Show success message
+                st.success("✅ Analysis complete! Ready for your next code snippet.")
+                
+                # Force rerun to show the new history and clear input
                 st.rerun()
                 
             except Exception as e:
@@ -427,18 +550,17 @@ function submitForm() {
                 - Try again in a few moments
                 """)
     
-    # Show validation history
-    render_history()
-    
     # Footer
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: #666; padding: 1rem 0;">
         <small>
             Built with ❤️ using Streamlit and LangChain • 
-            Powered by OpenAI GPT-4 • 
-            <strong>Compliance Checklist Agent v1.0</strong>
+            Powered by OpenAI GPT-4
         </small>
+        <p>
+            <small>Compliance Checklist Agent v1.0</small>
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
