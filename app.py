@@ -473,21 +473,7 @@ def main():
     # Code input area with on_change callback
     code_input = st.text_area(
         label="Paste your HTML, CSS, or JavaScript code here:",
-        placeholder="""Example:
-<div class="card">
-    <h1>Welcome to my website</h1>
-    <button onclick="submitForm()">Submit</button>
-</div>
-
-<style>
-button { color: blue; }
-</style>
-
-<script>
-function submitForm() {
-    document.getElementById('form').submit();
-}
-</script>""",
+        placeholder="""Paste your code snippet here!""",
         height=300,
         key="code_input",
         help="Enter any HTML, CSS, or JavaScript code for compliance analysis"
