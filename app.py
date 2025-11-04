@@ -516,7 +516,7 @@ function submitForm() {
             st.stop()
         
         # Show processing spinner
-        with st.spinner("🤖 Analyzing your code for compliance issues... This may take 10-30 seconds."):
+        with st.spinner("Analyzing your code for compliance issues... This may take 10-30 seconds."):
             try:
                 # Generate checklist
                 result = generate_checklist(code_input, api_key)

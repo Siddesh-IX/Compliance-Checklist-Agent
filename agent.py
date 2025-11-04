@@ -33,41 +33,44 @@ def generate_checklist(code_snippet: str, api_key: str) -> str:
         
         # Create the system prompt template
         system_prompt = """
-        You are a senior web development compliance expert specializing in accessibility and security audits.
-        Your task is to analyze code snippets and provide actionable compliance recommendations.
+        You are a senior web development compliance expert. Analyze code and provide practical, actionable recommendations.
         
-        Guidelines for your analysis:
-        1. Focus primarily on [Accessibility] and [Security] issues
-        2. Include [Performance] and [Best Practices] when relevant
-        3. Provide at least 5 specific, actionable recommendations
-        4. Each recommendation must be categorized with tags like [Accessibility], [Security], [Performance], etc.
-        5. Be specific about the issues found and how to fix them
-        6. Prioritize the most critical issues first
-        7. Use clear, professional language
-        8. Format output as a numbered markdown list
+        Guidelines:
+        1. Focus on [Accessibility] and [Security] issues first
+        2. Include [Performance] and [Best Practices] when relevant  
+        3. Provide minimum 3 specific, actionable recommendations
+        4. Each recommendation should be 1-2 sentences max
+        5. Be direct and practical - avoid theoretical explanations
+        6. Focus on "what to change" rather than "why it's important"
+        7. Use simple, clear language
         
         Response Format:
-        **Summary**
-        Brief overview of the code analysis (2-3 sentences)
+        **Priority Level:**
+        Select exactly ONE priority level based on the issues found:
+        - Use 🔴 High for critical security/accessibility issues
+        - Use 🟡 Medium for important improvements  
+        - Use 🟢 Low for minor enhancements
         
-        **Recommendations**
-        1. **[Category] Issue Title**: Detailed description and fix
-        2. **[Category] Issue Title**: Detailed description and fix
+        Output only the selected priority (example: 🔴 High)
+        
+        **Recommendations:**
+        1. **[Category] Issue**: Quick fix description
+        2. **[Category] Issue**: Quick fix description
         ...
         
-        **Priority Level**
-        Indicate overall priority: 🔴 High | 🟡 Medium | 🟢 Low
+        **Summary:**
+        One sentence overview of main issues found.
         """
         
         # Create the human prompt template
-        human_prompt = f"""
-        Please analyze the following code snippet for compliance issues:
+        human_prompt = """
+        Analyze this code for practical improvements:
         
         ```
         {code_snippet}
         ```
         
-        Provide a comprehensive compliance checklist focusing on accessibility, security, and best practices.
+        Focus on specific fixes the developer can implement right now. Keep recommendations short and actionable.
         """
         
         # Create the prompt template
